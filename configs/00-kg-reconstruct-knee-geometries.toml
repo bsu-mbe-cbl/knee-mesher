@@ -1,0 +1,44 @@
+
+axes_shifts = [[0, 1, 2], [0, 1, 2]]
+rotations_xyz = [0.0, 0.0, 0.0]
+
+flip_x = false
+flip_y = false
+flip_z = false
+flip_left_right_orig = false
+
+segmentation_dir = "data/segmentations/manual-segmentations-2023"
+
+export_dir = "data/reconstructions/manual-segmentations-2023"
+
+overwrite_existing = true
+
+# Number of processors to use (defaults to one less than available CPUs if not set)
+# num_processors = 1 # Set to an integer value or comment out for n-1 system processors
+
+voxel_spacing = [0.36458333, 0.36458333, 0.7]
+
+# Number of smoothing iterations for the bone and cartilage masks
+[smoothing]
+n_bone_iters = 300
+n_iters = 50
+
+
+[masks_map]
+femur_bone = "femur_bone"
+femur_cartilage = "femur_cartilage"
+fibula_bone = "fibula_bone"
+meniscus_lateral = "meniscus_lateral"
+meniscus_medial = "meniscus_medial"
+patella_bone = "patella_bone"
+patella_cartilage = "patella_cartilage"
+tibia_bone = "tibia_bone"
+tibia_cartilage_lateral = "tibia_cartilage_lateral"
+tibia_cartilage_medial = "tibia_cartilage_medial"
+
+# Include subjects (empty list means all subjects)
+[subjects]
+include = [
+	"9056363", "9068453", "9087863", "9094865", "9102858",
+]
+ 

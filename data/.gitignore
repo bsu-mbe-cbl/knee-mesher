@@ -1,0 +1,9 @@
+*
+# Except this file and .gitignore in sub directories
+!.gitignore
+!segmentations/
+!reconstructions/
+!segmentations/**/
+!reconstructions/**/
+!segmentations/**/.gitignore
+!reconstructions/**/.gitignore

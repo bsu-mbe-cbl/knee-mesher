@@ -1,0 +1,71 @@
+# Root level pickles
+*.pkl
+*.pickle
+# Temporary and binary files
+*.zip
+*.mp4
+*.png
+*.ico
+*.stl
+*.pdf
+*~
+*.py[cod]
+*.so
+*.orig
+*.log
+*.pot
+__pycache__/*
+.cache/*
+.*.swp
+*/.ipynb_checkpoints/*
+.DS_Store
+*.csv
+
+# Project files
+/references/
+.ropeproject
+.project
+.pydevproject
+.settings
+.idea
+.vscode/
+# !.vscode/*.project.json
+tags
+.github/
+
+# Package files
+*.egg
+*.eggs/
+.installed.cfg
+*.egg-info
+
+# Unittest and coverage
+htmlcov/*
+.coverage
+.coverage.*
+.tox
+junit*.xml
+coverage.xml
+.pytest_cache/
+.ruff_cache/
+
+# Build and docs folder/files
+build/*
+dist/*
+sdist/*
+docs/api/*
+docs/_rst/*
+docs/_build/*
+cover/*
+MANIFEST
+
+# Per-project virtualenvs
+.venv*/
+.conda*/
+env/
+.env/*
+test-env/*
+data.7z
+typings/**/*.pyi
+typings/*
+typings/

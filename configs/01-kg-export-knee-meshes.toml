@@ -1,0 +1,199 @@
+
+
+[knee_index_slice]
+start = 0
+step = 1
+
+# Directories and filenames. If home_dir is specified, the remaining paths can be
+# relative to home_dir. If home_dir is not specified, all paths must be absolute.
+[directories_and_logging]
+home_dir = "REPO_DIR"
+stl_dir = "m00"
+import_dir = "data/reconstructions/manual-segmentations-2023"
+root_export_dir = "exports/sample"
+export_dirname = "kneemesher"
+logging_filename = "logging/sample.log"
+append_datetime_to_log = true
+prepend_import_dirname_to_log = true
+logging_level = "INFO"
+
+[batch_processing]
+# Toggle left knee processing when no filepath clues are available
+is_left_knee_batch = false
+
+# Turn on for FEA simulations set up for right knees only
+flip_left_knees_to_right = true
+
+# Knee STLs currently need to be rotated to match the original UCONN coordinate system.
+# This will be removed for the 1.0 release, but for now, we need the +Y axis to be
+# aligned with the anterior direction, and the +Z axis to be aligned with the superior
+# direction. The rotations are specified in degrees. The rotations are performed in
+# sequence using single function calls. The order of the rotations is specified by the
+# rotation_order parameter. The rotation_order parameter is a string of length 3. Note:
+# the meshes will be rotated back to their original orientation after meshing finishes.
+[rotations]
+rotation_order = "zyx"
+x_rotation_degree = 0.0
+y_rotation_degree = 0.0
+z_rotation_degree = 0.0
+
+[tissue_selections]
+do_bones = true
+do_femur_cart = true
+do_patella_cart = true
+do_tibia_cart_lateral = true
+do_tibia_cart_medial = true
+do_meniscus_lateral = true
+do_meniscus_medial = true
+
+[bones]
+triangle_type = "R3D3"
+target_size = 3.0
+
+[cartilage]
+hexahedron_type = "C3D8R"
+
+[femur_cartilage]
+reconstruction_smoothing_iters = 0
+resolution = [3.75, 1.5]           # Radial, longitudinal: Default [5, 2]
+blending_grade = 1
+minimum_grade_scaling = 0.3
+bone_to_joint_displacement_weights = [0.7, 0.3]
+n_layers_or_slice_locs = 3
+early_subdivision = false
+
+[patella_cartilage]
+reconstruction_smoothing_iters = 0
+resolution = [2.5, 1]              # Radial, longitudinal: Default [5, 2]
+blending_grade = 1
+minimum_grade_scaling = 0.3
+bone_to_joint_displacement_weights = [0.7, 0.3]
+n_layers_or_slice_locs = 3
+early_subdivision = false
+
+[tibia_cartilage_lateral]
+elem_counts = [13, 10, 9] # Long, short, radial: Default [13, 10, 9]
+resolution = [1, 1]       # Default [2, 2]
+blending_grade = 1
+minimum_grade_scaling = 0.3
+bone_to_joint_displacement_weights = [0.7, 0.3]
+n_layers_or_slice_locs = 3
+early_subdivision = false
+
+[tibia_cartilage_medial]
+elem_counts = [13, 10, 9] # Long, short, radial: Default [13, 10, 9]
+resolution = [1, 1]       # Default [2, 2]
+blending_grade = 1
+minimum_grade_scaling = 0.3
+bone_to_joint_displacement_weights = [0.7, 0.3]
+n_layers_or_slice_locs = 3
+early_subdivision = false
+
+# Meniscus is still experimental.
+[meniscus_lateral]
+resolution = [6, 6]
+reconstruction_smoothing_iters = 0
+
+[meniscus_medial]
+resolution = [6, 6]
+reconstruction_smoothing_iters = 0
+
+# Choose if laminar cartilage tissue blending is performed.
+[cartilage_blending]
+do_blending = true
+
+# Attempt to translate all bone-side cartilage nodes to bone surface. This option
+# wasn't worth the loss in elemnt quality for us, and often fails. Improved bone
+# segmentations and mesh densities may make it worth revisiting.
+do_fuse_cartilage_to_bone = false
+
+# Attempt to translate *only* outer edge of bone-side nodes to bone surface
+do_blend_fusion = true
+
+# The dictionary of filename stems:
+# Example for Fem_Bone.stl: femur_bone = "Fem_Bone"
+# NOTE: The search pattern is used to find a list of files to process. The search
+# pattern is a regular expression. The search pattern should match a file present in
+# each subject or subject/left_or_right_side directory.
+[stl_import_stems]
+femur_bone = "femur_bone"
+femur_cartilage = "femur_cartilage"
+fibula_bone = "fibula_bone"
+meniscus_lateral = "meniscus_lateral"
+meniscus_medial = "meniscus_medial"
+patella_bone = "patella_bone"
+patella_cartilage = "patella_cartilage"
+tibia_bone = "tibia_bone"
+tibia_cartilage_lateral = "tibia_cartilage_lateral"
+tibia_cartilage_medial = "tibia_cartilage_medial"
+search_pattern = "femur_cartilage"
+search_ignore_patterns = ["original", "raw_marching_cubes"]
+
+# The dictionary of INP filename stems:
+# Example for FEM_BONE_G.inp: femur_bone = "Fem_Bone_G"
+[inp_export_stems]
+femur_bone = "FEM_BONE_G"
+femur_cartilage = "FEM_CART_G"
+fibula_bone = "FIB_BONE_G"
+meniscus_lateral = "MEN_LAT_G"
+meniscus_medial = "MEN_MED_G"
+patella_bone = "PAT_BONE_G"
+patella_cartilage = "PAT_CART_G"
+tibia_bone = "TIB_BONE_G"
+tibia_cartilage_lateral = "TIB_CART_LAT_G"
+tibia_cartilage_medial = "TIB_CART_MED_G"
+
+[node_sets]
+femur_bone = []
+femur_cartilage = []
+fibula_bone = []
+meniscus_lateral = ["anterior_horn_pids", "posterior_horn_pids"]
+meniscus_medial = ["anterior_horn_pids", "posterior_horn_pids"]
+patella_bone = []
+patella_cartilage = []
+tibia_bone = []
+tibia_cartilage_lateral = []
+tibia_cartilage_medial = []
+
+[elem_sets]
+femur_bone = []
+femur_cartilage = []
+fibula_bone = []
+meniscus_lateral = []
+meniscus_medial = []
+patella_bone = []
+patella_cartilage = []
+tibia_bone = []
+tibia_cartilage_lateral = []
+tibia_cartilage_medial = []
+
+[node_number_starts]
+femur_bone = 1
+femur_cartilage = 1
+fibula_bone = 1
+meniscus_lateral = 1
+meniscus_medial = 1
+patella_bone = 1
+patella_cartilage = 1
+tibia_bone = 1
+tibia_cartilage_lateral = 1
+tibia_cartilage_medial = 1
+
+[element_number_starts]
+femur_bone = 1
+femur_cartilage = 1
+fibula_bone = 1
+meniscus_lateral = 1
+meniscus_medial = 1
+patella_bone = 1
+patella_cartilage = 1
+tibia_bone = 1
+tibia_cartilage_lateral = 1
+tibia_cartilage_medial = 1
+
+# An empty include list allows all subjects; exclusions still take precedence.
+[subjects]
+exclude = []
+include = [
+    "9056363", "9068453", "9087863", "9094865", "9102858",
+]

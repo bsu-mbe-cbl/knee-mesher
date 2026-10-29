@@ -1,0 +1,150 @@
+[project]
+name = "knee-mesher"
+description = "Reconstruct knee tissue surfaces and export hexahedral meshes to Abaqus."
+readme = "README.md"
+authors = [{ name = "Kalin Gibbons", email = "jointmodels@protonmail.com" }]
+license = "PolyForm-Noncommercial-1.0.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.14"
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = [
+    "numpy",
+    "h5py",
+    "scipy",
+    "pandas",
+    "pyarrow",
+    "tqdm",
+    "psutil",
+    "colorama",
+    "matplotlib",
+    "scikit-learn",
+    "meshio",
+    "deprecation",
+    "pyvista>=0.49.1",
+    "vtk>=9.7.1",
+    "trimesh[easy,recommend]>=5.2.0",
+    "open3d>=0.20.0",
+    "pyacvd",
+    "imageio[ffmpeg]",
+    "pycpd",
+    "probreg",
+]
+
+[project.optional-dependencies]
+meshfix = ["pymeshfix>=0.18.1"]
+
+[project.urls]
+Repository = "https://github.com/bsu-mbe-cbl/knee-mesher"
+Issues = "https://github.com/bsu-mbe-cbl/knee-mesher/issues"
+Changelog = "https://github.com/bsu-mbe-cbl/knee-mesher/blob/main/CHANGELOG.md"
+
+[project.scripts]
+kneemesher-data = "kneemesher.datasets:main"
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "ipython",
+    "pre-commit",
+]
+docs = [
+    "sphinx>=8.2",
+    "myst-parser[linkify]",
+    "pydata-sphinx-theme",
+]
+
+[build-system]
+requires = ["hatchling>=1.27", "hatch-vcs>=0.5"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+version_scheme = "no-guess-dev"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kneemesher"]
+exclude = ["/references/**", "src/kneemesher/data/**"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src/kneemesher",
+    "/tests",
+    "/tools/build_dataset_release.py",
+    "/configs",
+    "/notebooks/meshing_pipeline",
+    "/docs",
+    "/AUTHORS.md",
+    "/CHANGELOG.md",
+    "/CONTRIBUTING.md",
+    "/README.md",
+    "/LICENSE",
+    "/pyproject.toml",
+    "/uv.lock",
+    "/.python-version",
+    "/.pre-commit-config.yaml",
+    "/.readthedocs.yml",
+]
+exclude = [
+    "/references/**",
+    "/docs/api",
+    "/docs/_build",
+    "/src/kneemesher/data/**",
+    "**/__pycache__",
+    "*.pyc",
+]
+# Geometry fixtures also match the repository-wide *.stl ignore rule.
+artifacts = ["/tests/resources/**/*.stl"]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "--cov=kneemesher",
+    "--cov-report=term-missing",
+    "--verbose",
+]
+testpaths = ["tests"]
+norecursedirs = ["dist", "build", ".tox"]
+
+[tool.coverage.run]
+branch = true
+source = ["kneemesher"]
+
+[tool.coverage.paths]
+source = ["src/kneemesher", "*/site-packages/kneemesher"]
+
+[tool.coverage.report]
+exclude_also = [
+    "def __repr__",
+    "if self\\.debug",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+extend-exclude = ["references", "docs/api", "docs/_build", "typings"]
+
+[tool.ruff.lint]
+select = ["D", "E4", "E7", "E9", "F", "I", "NPY201"]
+ignore = ["E402"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["kneemesher"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+line-ending = "lf"
